@@ -68,3 +68,6 @@ obj-$(CONFIG_QPNP_MISC) += qpnp-misc.o
 obj-$(CONFIG_QCOM_LIQUID_DOCK)	+= qcom_liquid_dock.o
 obj-y				+= qcom/
 obj-$(CONFIG_UID_SYS_STATS) += uid_sys_stats.o
+#lenovo-sw jixj 2014.6.10 add for hwid
+obj-y += hw_ver.o
+obj-y += lephone_nv.o

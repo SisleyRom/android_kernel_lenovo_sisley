@@ -230,8 +230,6 @@ struct synaptics_rmi4_data {
 	struct workqueue_struct *det_workqueue;
 	unsigned int firmware_config_id;
 	unsigned int fw_cfg_id;
-	struct work_struct recovery_work;
-	struct delayed_work init_work;
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	struct early_suspend early_suspend;
 #endif
@@ -270,7 +268,6 @@ struct synaptics_rmi4_data {
 	wait_queue_head_t wait;
 	bool stay_awake;
 	bool staying_awake;
-	bool check_build;
 	int (*i2c_read)(struct synaptics_rmi4_data *pdata, unsigned short addr,
 			unsigned char *data, unsigned short length);
 	int (*i2c_write)(struct synaptics_rmi4_data *pdata, unsigned short addr,
@@ -297,7 +294,6 @@ struct synaptics_rmi4_data {
 	struct clk *core_clk;
 	struct clk *iface_clk;
 #endif
-	ktime_t timestamp;
 };
 
 enum exp_fn {
