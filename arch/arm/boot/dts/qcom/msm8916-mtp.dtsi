@@ -22,29 +22,27 @@
 
 &soc {
 	i2c@78b9000 { /* BLSP1 QUP5 */
-		synaptics@20 {
-			compatible = "synaptics,rmi4";
-			reg = <0x20>;
+		synaptics@38 {
+			compatible = "synaptics_z2,rmi4";
+			reg = <0x38>;
 			interrupt-parent = <&msm_gpio>;
 			interrupts = <13 0x2008>;
 			vdd-supply = <&pm8916_l17>;
 			vcc_i2c-supply = <&pm8916_l6>;
 			/* pins used by touchscreen */
-			pinctrl-names = "pmx_ts_active","pmx_ts_suspend","pmx_ts_suspend";
+			pinctrl-names = "pmx_ts_active","pmx_ts_suspend";
 			pinctrl-0 = <&ts_int_active &ts_reset_active>;
 			pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
-			pinctrl-2 = <&ts_release>;
-			synaptics,display-coords = <0 0 1079 1919>;
-			synaptics,panel-coords = <0 0 1079 2084>;
+			synaptics,display-coords = <0 0 719 1279>;
+			synaptics,panel-coords = <0 0 719 1279>;
 			synaptics,irq-gpio = <&msm_gpio 13 0x2008>;
 			synaptics,reset-gpio = <&msm_gpio 12 0x0>;
+			synaptics,button-map = <139 172 158>;
+			synaptics,fw-image-name = "Lenovo_K7mini_PVT_014D000C";
+			synaptics,fw-image-name-second = "Lenovo_K7mini_PVT_074D0002";
 			synaptics,i2c-pull-up;
 			synaptics,power-down;
-			synaptics,disable-gpios;
-			/* Underlying clocks used by secure touch */
-			clocks = <&clock_gcc clk_gcc_blsp1_ahb_clk>,
-			 <&clock_gcc clk_gcc_blsp1_qup5_i2c_apps_clk>;
-			clock-names = "iface_clk", "core_clk";
+			/*synaptics,disable-gpios;*///ahe disable gpio suspend currentlly
 		};
 	};
 
@@ -352,6 +350,7 @@
 	};
 };
 
+/*
 #include "dsi-panel-jdi-1080p-video.dtsi"
 
 &mdss_mdp {
@@ -391,7 +390,7 @@
 &dsi_jdi_1080_vid {
        qcom,cont-splash-enabled;
 };
-
+*/
 &pm8916_chg {
 	status = "ok";
 	qcom,charging-disabled;

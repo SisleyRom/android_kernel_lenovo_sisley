@@ -4334,6 +4334,19 @@ static int synaptics_rmi4_check_configuration(struct synaptics_rmi4_data
 				sizeof(device_control.data));
 		if (retval < 0)
 			return retval;
+<<<<<<< HEAD
+=======
+
+		device_control.configured = DEVICE_CONFIGURED;
+
+		retval = synaptics_rmi4_i2c_write(rmi4_data,
+				rmi4_data->f01_ctrl_base_addr,
+				device_control.data,
+				sizeof(device_control.data));
+		if (retval < 0)
+			return retval;
+	}
+>>>>>>> 6eb54d20483... to sisleylr
 
 		device_control.configured = DEVICE_CONFIGURED;
 
@@ -4489,6 +4502,16 @@ static int synaptics_rmi4_resume(struct device *dev)
 	synaptics_rmi4_sensor_wake(rmi4_data);
 	rmi4_data->touch_stopped = false;
 	synaptics_rmi4_irq_enable(rmi4_data, true);
+<<<<<<< HEAD
+=======
+
+	retval = synaptics_rmi4_check_configuration(rmi4_data);
+	if (retval < 0) {
+		dev_err(dev, "Failed to check configuration\n");
+		goto err_check_configuration;
+	}
+	rmi4_data->suspended = false;
+>>>>>>> 6eb54d20483... to sisleylr
 
 	retval = synaptics_rmi4_check_configuration(rmi4_data);
 	if (retval < 0) {

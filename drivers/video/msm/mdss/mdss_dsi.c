@@ -24,6 +24,10 @@
 #include <linux/leds-qpnp-wled.h>
 #include <linux/clk.h>
 
+#ifdef CONFIG_STATE_NOTIFIER
+#include <linux/state_notifier.h>
+#endif
+#include <soc/qcom/socinfo.h>//lenovo jixu add
 #include "mdss.h"
 #include "mdss_panel.h"
 #include "mdss_dsi.h"
@@ -622,6 +626,10 @@ int mdss_dsi_on(struct mdss_panel_data *pdata)
 	/* DSI link clocks need to be on prior to ctrl sw reset */
 	mdss_dsi_clk_ctrl(ctrl_pdata, DSI_LINK_CLKS, 1);
 	mdss_dsi_sw_reset(ctrl_pdata, true);
+	if(of_board_is_sisley()){//lenovo jixu add
+		if (mipi->init_delay)
+			usleep(mipi->init_delay);
+	}
 
 	/*
 	 * Issue hardware reset line after enabling the DSI clocks and data
@@ -643,6 +651,9 @@ int mdss_dsi_on(struct mdss_panel_data *pdata)
 
 	if (mipi->init_delay)
 		usleep(mipi->init_delay);
+
+	if(of_board_is_sisley())
+		mipi->force_clk_lane_hs=1;//jixu add
 
 	if (mipi->force_clk_lane_hs) {
 		u32 tmp;

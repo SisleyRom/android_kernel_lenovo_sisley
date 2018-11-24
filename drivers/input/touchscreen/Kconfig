@@ -1098,6 +1098,19 @@ config TOUCHSCREEN_GT9XX
 
 source "drivers/input/touchscreen/gt9xx/Kconfig"
 
+
+config TOUCHSCREEN_MMS200
+        tristate "MELFAS MMS-series touchscreen"
+        depends on I2C
+        help
+          Say Y here if you have a MELFAS MMS-series touchscreen controller
+          chip in your system.
+
+          To compile this driver as a module, choose M here: the
+          module will be called mms200_ts.
+
+          If unsure, say N.
+
 config TOUCHSCREEN_GT9XX_HQ
 	bool "Goodix touchpanel (HQ variant)"
 	depends on I2C
@@ -1159,6 +1172,17 @@ config INPUT_MT_WRAPPER
 	  Say Y here if you want to enable the driver.
 
 	  If unsure, say N.
+
+config TOUCHSCREEN_PROPERTY
+        tristate "touchscreen common interface"
+        depends on I2C
+        help
+          Say Y here if you have to need touchpanel common interface
+
+          If unsure, say N.
+
+source "drivers/input/touchscreen/gt9xx/Kconfig"
+source "drivers/input/touchscreen/gt9xx_sisleylt/Kconfig"
 
 config TOUCHSCREEN_IT7260_I2C
 	tristate "IT7260 Touchscreen Driver"

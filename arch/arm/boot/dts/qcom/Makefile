@@ -104,8 +104,9 @@ dtb-$(CONFIG_ARCH_MSM8916) += msm8916-cdp.dtb \
 	msm8916-qrd-skut1.dtb \
 	apq8016-mtp.dtb \
 	apq8016-mtp-smb1360.dtb \
-	apq8016-sbc.dtb \
-	msm8939-qrd-skuk.dtb \
+	apq8016-sbc.dtb
+ifeq ($(CONFIG_PRODUCT_SISLEYL),n)
+dtb-$(CONFIG_ARCH_MSM8916) += msm8939-qrd-skuk.dtb \
 	msm8939-qrd-skul.dtb \
 	msm8939-cdp.dtb \
 	msm8939-cdp-jdi.dtb \
@@ -139,6 +140,10 @@ dtb-$(CONFIG_ARCH_MSM8916) += msm8916-cdp.dtb \
 	msm8929-qrd-skul.dtb \
 	msm8929-qrd-skulb.dtb \
 	msm8929-cdp-jdi.dtb
+endif
+dtb-$(CONFIG_PRODUCT_Z2) += msm8916-z2.dtb
+dtb-$(CONFIG_PRODUCT_SISLEY) += msm8916-sisley.dtb
+dtb-$(CONFIG_PRODUCT_SISLEYL) += msm8916-sisleyl.dtb
 endif
 
 dtb-$(CONFIG_ARCH_MSM8226) += msm8226-sim.dtb \
