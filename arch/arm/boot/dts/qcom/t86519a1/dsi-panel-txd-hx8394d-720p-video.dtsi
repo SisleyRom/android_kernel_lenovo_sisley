@@ -92,5 +92,6 @@
 		qcom,mdss-dsi-reset-sequence = <1 20>, <0 10>, <1 100>;
 		qcom,mdss-dsi-lp11-init;
 		qcom,suspend-ulps-enabled;
+		qcom,ulps-enabled;
 	};
 };
