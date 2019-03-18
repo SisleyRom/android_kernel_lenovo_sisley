@@ -69,3 +69,5 @@ obj-$(CONFIG_QCOM_LIQUID_DOCK)	+= qcom_liquid_dock.o
 obj-y				+= qcom/
 obj-$(CONFIG_UID_CPUTIME) 	+= uid_cputime.o
 obj-$(CONFIG_FORCE_FAST_CHARGE) += fastchg.o
+obj-y += hw_ver.o
+obj-y += lephone_nv.o

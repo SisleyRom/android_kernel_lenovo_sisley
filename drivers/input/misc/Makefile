@@ -128,3 +128,11 @@ obj-$(CONFIG_SENSORS_BMM050)    += bmm050_driver.o bmm050.o
 ifeq ($(CONFIG_SENSORS_BMM050),y)
 	EXTRA_CFLAGS += -DBMM_USE_BASIC_I2C_FUNC -DCONFIG_BMM_USE_PLATFORM_DATA
 endif
+
+obj-$(CONFIG_SENSORS_LSM303D)	+= lsm303d.o
+obj-$(CONFIG_APDS9930)		+= apds993x.o
+obj-$(CONFIG_APDS9930_SISLEY)		+= apds993x_sisley.o
+obj-$(CONFIG_SENSORS_EPL8801)		+= epl8801.o
+#obj-$(CONFIG_SENSORS_BMA2X2)    += bma2x2_driver.o
+obj-$(CONFIG_SENSORS_BMA2X2)    += bst_sensor_common.o
+obj-$(CONFIG_LENOVO_HALL)    += hall_switch.o
