@@ -140,4 +140,3 @@ obj-$(CONFIG_SENSORS_EPL8801)		+= epl8801.o
 obj-$(CONFIG_SENSORS_BMA2X2)    += bst_sensor_common.o
 # lenovo-sw youwc1 for g-sensor end
 obj-$(CONFIG_LENOVO_HALL)    += hall_switch.o
->>>>>>> 6eb54d20483... to sisleylr

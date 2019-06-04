@@ -148,9 +148,6 @@
 
 /* usb_interrupts */
 
-/* LAZY FIX */
-#define schedule_delayed_work queue_delayed_work
-
 struct qpnp_lbc_irq {
 	int		irq;
 	unsigned long	disabled;
@@ -3055,7 +3052,7 @@ static irqreturn_t qpnp_lbc_usbin_valid_irq_handler(int irq, void *_chip)
 /*lenovo-sw weiweij added for airplay changes*/
 			wake_lock(&chip->temp_mon_wake_lock);
 			cancel_delayed_work(&chip->temp_mon_work);
-			queue_delayed_work(system_power_efficient_wq,&chip->temp_mon_work,0);
+			schedule_delayed_work(&chip->temp_mon_work,0);
 			qpnp_lbc_charger_enable(chip, CURRENT, 1);
 /*lenovo-sw weiweij added for airplay changes end*/
 			
@@ -3113,7 +3110,7 @@ static irqreturn_t qpnp_lbc_batt_temp_irq_handler(int irq, void *_chip)
 
 /*lenovo-sw weiweij added for airplay changes*/
 	cancel_delayed_work(&chip->temp_mon_work);
-    queue_delayed_work(system_power_efficient_wq,&chip->temp_mon_work,0);
+    schedule_delayed_work(&chip->temp_mon_work,0);
 /*lenovo-sw weiweij added for airplay changes end*/
 	batt_temp_good = qpnp_lbc_is_batt_temp_ok(chip);
 	pr_debug("batt-temp triggered: %d\n", batt_temp_good);
@@ -3439,7 +3436,7 @@ qpnp_temp_mon_work(struct work_struct *work)
         2. battery temp is out of 10-45 degree
         * */
        if(wake_lock_active(&chip->temp_mon_wake_lock) || temp_abnormal == true || chip->bat_is_cool || chip->bat_is_warm)
-               queue_delayed_work(system_power_efficient_wq,&chip->temp_mon_work,msecs_to_jiffies(delay_ms));
+               schedule_delayed_work(&chip->temp_mon_work,msecs_to_jiffies(delay_ms));
 }
 /*lenovo-sw weiweij added for airplay changes end*/
 
@@ -3596,7 +3593,7 @@ static void determine_initial_status(struct qpnp_lbc_chip *chip)
 /*lenovo-sw weiweij added for airplay changes*/
 	   wake_lock(&chip->temp_mon_wake_lock);
 	   cancel_delayed_work(&chip->temp_mon_work);
-	   queue_delayed_work(system_power_efficient_wq,&chip->temp_mon_work,0);
+	   schedule_delayed_work(&chip->temp_mon_work,0);
 /*lenovo-sw weiweij added for airplay changes end*/
 	}
 }
