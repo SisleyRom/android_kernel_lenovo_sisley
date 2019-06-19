@@ -431,6 +431,7 @@
 &mdss_mdp {
 	qcom,mdss-pref-prim-intf = "dsi";
 };
+
 &dsi_nt35521_boe_720_vid {
 
     mpp@a100 { /* MPP 2 */
