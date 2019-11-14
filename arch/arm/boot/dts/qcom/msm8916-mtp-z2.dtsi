@@ -1,4 +1,4 @@
-/* Copyright (c) 2014-2015, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -44,6 +44,15 @@
 			synaptics,power-down;
 			/*synaptics,disable-gpios;*///ahe disable gpio suspend currentlly
 		};
+
+/* lenovo-sw zhouwl, 2014-04-29 add begin */
+	nxp_tfa9887@34 {
+		compatible = "nxp,tfa9887";
+		reg = <0x34>;
+		vdd-supply = <&pm8916_s3>;
+		vcc_i2c-supply = <&pm8916_l17>;
+		};
+/* lenovo-sw zhouwl, 2014-04-29 add end */
 	};
 
 	gen-vkeys {
@@ -57,76 +66,30 @@
 	};
 
 	i2c@78ba000 { /* BLSP1 QUP6 */
-		nfc-nci@e {
-			compatible = "qcom,nfc-nci";
-			reg = <0x0e>;
+		6-0028@28 {
+			compatible = "nxp,nfc-547";
+			reg = <0x28>;
+          /*
 			qcom,irq-gpio = <&msm_gpio 21 0x00>;
 			qcom,dis-gpio = <&msm_gpio 20 0x00>;
 			qcom,clk-src = "BBCLK2";
 			qcom,clk-en-gpio = <&msm_gpio 0 0x00>;
+          */
 			interrupt-parent = <&msm_gpio>;
 			interrupts = <21 0>;
+          /*
 			interrupt-names = "nfc_irq";
 			pinctrl-names = "nfc_active","nfc_suspend";
 			pinctrl-0 = <&nfc_int_active &nfc_disable_active>;
 			pinctrl-1 = <&nfc_int_suspend &nfc_disable_suspend>;
+			*/
+			nxp-nfc-547,irq-gpio = <&msm_gpio 21 0x00>;
+			nxp-nfc-547,ven-gpio = <&msm_gpio 20 0x00>;
+			nxp-nfc-547,firm-gpio = <&msm_gpio 114 0x00>;
 			qcom,clk-gpio = <&pm8916_gpios 2 0>;
 			clocks = <&clock_rpm clk_bb_clk2_pin>;
-			clock-names = "ref_clk";
+			clock-names = "nfc_clk";
 		};
-	};
-
-	i2c@78b6000 { /* BLSP1 QUP2 */
-		mpu6050@68 { /* Gyroscope and accelerometer sensor combo */
-			compatible = "invn,mpu6050";
-			reg = <0x68>;
-			pinctrl-names = "mpu_default","mpu_sleep";
-			pinctrl-0 = <&mpu6050_default>;
-			pinctrl-1 = <&mpu6050_sleep>;
-			interrupt-parent = <&msm_gpio>;
-			interrupts = <115 0x2>;
-			vdd-supply = <&pm8916_l17>;
-			vlogic-supply = <&pm8916_l16>;
-			vi2c-supply = <&pm8916_l6>;
-			invn,gpio-int = <&msm_gpio 115 0x2>;
-			invn,place = "Portrait Down Back Side";
-		};
-
-		avago@39 { /* Ambient light and proximity sensor */
-			compatible = "avago,apds9900";
-			reg = <0x39>;
-			pinctrl-names = "default","sleep";
-			pinctrl-0 = <&apds99xx_default>;
-			pinctrl-1 = <&apds99xx_sleep>;
-			interrupt-parent = <&msm_gpio>;
-			interrupts = <113 0x2002>;
-			vdd-supply = <&pm8916_l17>;
-			vio-supply = <&pm8916_l6>;
-			avago,irq-gpio = <&msm_gpio 113 0x2002>;
-			avago,ps-threshold = <600>;
-			avago,ps-hysteresis-threshold = <500>;
-			avago,ps-pulse = <8>;
-			avago,ps-pgain = <0>;
-			avago,als-B = <223>;
-			avago,als-C = <70>;
-			avago,als-D = <142>;
-			avago,ga-value = <48>;
-		};
-
-		akm@c {
-			compatible = "ak,ak8963";
-			reg = <0x0c>;
-			pinctrl-names = "ak8963_default", "ak8963_sleep";
-			pinctrl-0 = <&ak8963_default>;
-			pinctrl-1 = <&ak8963_sleep>;
-			interrupt-parent = <&msm_gpio>;
-			interrupts = <69 0x2>;
-			vdd-supply = <&pm8916_l17>;
-			vio-supply = <&pm8916_l6>;
-			ak,layout = <0x6>;
-			ak,auto-report;
-		};
-
 	};
 
 	sound {
@@ -134,9 +97,9 @@
 		qcom,model = "msm8x16-snd-card-mtp";
 		qcom,msm-snd-card-id = <0>;
 		qcom,msm-codec-type = "internal";
-		qcom,msm-ext-pa = "primary";
+		qcom,msm-ext-pa = "quaternary";
 		qcom,msm-mclk-freq = <9600000>;
-		qcom,msm-mbhc-hphl-swh = <0>;
+		qcom,msm-mbhc-hphl-swh = <1>;
 		qcom,msm-mbhc-gnd-swh = <0>;
 		qcom,msm-micbias1-ext-cap;
 		qcom,msm-hs-micbias-type = "internal";
@@ -154,21 +117,19 @@
 			"MIC BIAS Internal1", "Digital Mic1",
 			"DMIC2", "MIC BIAS Internal1",
 			"MIC BIAS Internal1", "Digital Mic2";
-		pinctrl-names = "cdc_lines_act",
-				"cdc_lines_sus",
-				"cdc_lines_sec_ext_act",
-				"cdc_lines_sec_ext_sus",
+		pinctrl-names = "cdc_pdm_lines_act",
+				"cdc_pdm_lines_sus",
 				"cross_conn_det_act",
-				"cross_conn_det_sus";
+				"cross_conn_det_sus",
+				"cdc_lines_quat_ext_act",
+				"cdc_lines_quat_ext_sus";
 		pinctrl-0 = <&cdc_pdm_lines_act>;
 		pinctrl-1 = <&cdc_pdm_lines_sus>;
-		pinctrl-2 = <&cdc_pdm_lines_act &cdc_ext_pa_act
-						&cdc_ext_pa_ws_act>;
-		pinctrl-3 = <&cdc_pdm_lines_sus &cdc_ext_pa_sus
-						&cdc_ext_pa_ws_sus>;
-		pinctrl-4 = <&cross_conn_det_act>;
-		pinctrl-5 = <&cross_conn_det_sus>;
-		qcom,cdc-us-euro-gpios = <&msm_gpio 120 0>;
+		pinctrl-2 = <&cross_conn_det_act>;
+		pinctrl-3 = <&cross_conn_det_sus>;
+		pinctrl-4 = <&cdc_pdm_lines_act &ext_cdc_tlmm_lines_act>;
+		pinctrl-5 = <&cdc_pdm_lines_sus &ext_cdc_tlmm_lines_sus>;
+		qcom,cdc-us-euro-gpios = <&msm_gpio 91 0>;
 		asoc-platform = <&pcm0>, <&pcm1>, <&voip>, <&voice>,
 				<&loopback>, <&compress>, <&hostless>,
 				<&afe>, <&lsm>, <&routing>, <&lpa>;
@@ -180,8 +141,7 @@
 				<&dai_mi2s0>, <&dai_mi2s1>, <&dai_mi2s2>, <&dai_mi2s3>,
 				<&sb_0_rx>, <&sb_0_tx>, <&sb_1_rx>, <&sb_1_tx>,
 				<&sb_3_rx>, <&sb_3_tx>, <&sb_4_rx>, <&sb_4_tx>,
-				<&bt_sco_rx>, <&bt_sco_tx>, <&bt_a2dp_rx>,
-				<&int_fm_rx>, <&int_fm_tx>,
+				<&bt_sco_rx>, <&bt_sco_tx>, <&int_fm_rx>, <&int_fm_tx>,
 				<&afe_pcm_rx>, <&afe_pcm_tx>, <&afe_proxy_rx>, <&afe_proxy_tx>,
 				<&incall_record_rx>, <&incall_record_tx>, <&incall_music_rx>,
 				<&incall_music_2_rx>;
@@ -193,15 +153,24 @@
 				"msm-dai-q6-dev.16390", "msm-dai-q6-dev.16391",
 				"msm-dai-q6-dev.16392", "msm-dai-q6-dev.16393",
 				"msm-dai-q6-dev.12288", "msm-dai-q6-dev.12289",
-				"msm-dai-q6-dev.12290", "msm-dai-q6-dev.12292",
-				"msm-dai-q6-dev.12293",	"msm-dai-q6-dev.224",
-				"msm-dai-q6-dev.225", "msm-dai-q6-dev.241",
-				"msm-dai-q6-dev.240", "msm-dai-q6-dev.32771",
-				"msm-dai-q6-dev.32772", "msm-dai-q6-dev.32773",
-				"msm-dai-q6-dev.32770";
+				"msm-dai-q6-dev.12292", "msm-dai-q6-dev.12293",
+				"msm-dai-q6-dev.224", "msm-dai-q6-dev.225",
+				"msm-dai-q6-dev.241", "msm-dai-q6-dev.240",
+				"msm-dai-q6-dev.32771", "msm-dai-q6-dev.32772",
+				"msm-dai-q6-dev.32773", "msm-dai-q6-dev.32770";
 		asoc-codec = <&stub_codec>, <&pm8916_tombak_dig>;
 		asoc-codec-names = "msm-stub-codec.1", "tombak_codec";
 	};
+
+	/*lenovo-sw jixj 2014.6.9 add begin, for Z2 hardware id*/
+	hw_ver {
+		reg = <0 0x0>;
+		compatible = "hw-version";
+		gpios =
+			<&msm_gpio 8 0>, /* VER_GPIO0 */
+			<&msm_gpio 9 0>;   /* VER_GPIO1 */
+	};
+	/*lenovo-sw jixj 2014.6.9 add end*/
 };
 
 &blsp1_uart2 {
@@ -217,7 +186,7 @@
 		pinctrl-names = "tlmm_gpio_key_active","tlmm_gpio_key_suspend";
 		pinctrl-0 = <&gpio_key_active>;
 		pinctrl-1 = <&gpio_key_suspend>;
-
+/* lixh10 remove this useless keys
 		camera_focus {
 			label = "camera_focus";
 			gpios = <&msm_gpio 108 0x1>;
@@ -235,7 +204,7 @@
 			gpio-key,wakeup;
 			debounce-interval = <15>;
 		};
-
+*/
 		vol_up {
 			label = "volume_up";
 			gpios = <&msm_gpio 107 0x1>;
@@ -351,7 +320,57 @@
 };
 
 
+/* add bylenovo-sw2 houdz1 20140418 begin*/
+#include "lenovo-tianma-dsi-panel-hx8394d-720p-video.dtsi"
+#include "lenovo-boe-dsi-panel-nt35521-720p-video.dtsi"
 
+
+&mdss_mdp {
+	qcom,mdss-pref-prim-intf = "dsi";
+};
+&dsi_nt35521_boe_720_vid {
+	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
+	lenovo,panel_id = <0>;
+			/*qcom,mdss-dsi-bl-pmic-pwm-frequency = <100>;
+			qcom,mdss-dsi-bl-pmic-bank-select = <0>;
+			qcom,mdss-dsi-pwm-gpio = <&pm8916_mpps 4 0>;*/
+};
+
+			
+&dsi_hx8394d_tianma_720p_video{
+	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
+	lenovo,panel_id = <1>;
+			/*qcom,mdss-dsi-bl-pmic-pwm-frequency = <100>;
+			qcom,mdss-dsi-bl-pmic-bank-select = <0>;
+			qcom,mdss-dsi-pwm-gpio = <&pm8916_mpps 4 0>;*/
+};
+
+
+			
+&pmx_mdss {
+	qcom,num-grp-pins = <2>;
+	qcom,pins = <&gp 25>,<&gp 98>;
+};
+
+&pmx_mdss_z2 {
+	qcom,num-grp-pins = <2>;
+	qcom,pins =  <&gp 76>,<&gp 97>;
+};
+			
+&mdss_dsi0 {
+	qcom,dsi-pref-prim-pan = <&dsi_nt35521_boe_720_vid>;
+	pinctrl-names = "mdss_default", "mdss_sleep";
+	pinctrl-0 = <&mdss_dsi_active &mdss_dsi_active_z2>;
+	pinctrl-1 = <&mdss_dsi_suspend &mdss_dsi_suspend_z2>;
+			
+	qcom,platform-reset-gpio = <&msm_gpio 25 0>;
+			
+	qcom,platform-vsp-gpio = <&msm_gpio 97 0>;
+	qcom,platform-vsn-gpio = <&msm_gpio 76 0>;
+	qcom,platform-bklight-en-gpio = <&msm_gpio 98 0>;
+};
+
+/* add bylenovo-sw2 houdz1 20140418 end*/
 
 
 /*
@@ -366,8 +385,7 @@
 	qcom,mdss-dsi-bl-pmic-pwm-frequency = <100>;
 	qcom,mdss-dsi-bl-pmic-bank-select = <0>;
 	qcom,mdss-dsi-pwm-gpio = <&pm8916_mpps 4 0>;
-	qcom,mdss-dsi-pan-enable-dynamic-fps;
-	qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode";
+
 };
 
 &pmx_mdss {
