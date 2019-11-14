@@ -84,8 +84,12 @@ ifeq ($(CONFIG_SENSORS_BMA2X2_ENABLE_INT1),y)
 	EXTRA_CFLAGS += -DBMA2X2_ENABLE_INT1
 endif
 
-ifeq ($(CONFIG_BOSCH_BMA2X2_ENABLE_INT2),y)
+ifeq ($(CONFIG_SENSORS_BMA2X2_ENABLE_INT2),y)
 	EXTRA_CFLAGS += -DBMA2X2_ENABLE_INT2
+endif
+
+ifeq ($(CONFIG_SENSORS_BMA2X2_ENABLE_IDENT),y)
+	EXTRA_CFLAGS += -DBMA2X2_SENSOR_IDENTIFICATION_ENABLE
 endif
 
 obj-$(CONFIG_SENSORS_BMI160) += bmi160_driver.o bmi160.o
@@ -104,3 +108,15 @@ obj-$(CONFIG_SENSORS_BMI160_I2C) += bmi160_i2c.o
 ifeq ($(CONFIG_SENSORS_BMI160_I2C),y)
 	EXTRA_CFLAGS += -DBMI_USE_BASIC_I2C_FUNC
 endif
+
+obj-$(CONFIG_SENSORS_LSM303D)	+= lsm303d.o
+obj-$(CONFIG_APDS9930)		+= apds993x.o
+obj-$(CONFIG_APDS9930_SISLEY)		+= apds993x_sisley.o
+# lenovo-sw chenli2 for ALSPS start
+obj-$(CONFIG_SENSORS_EPL8801)		+= epl8801.o
+# lenovo-sw chenli2 for ALSPS end
+# lenovo-sw youwc1 for g-sensor start
+#obj-$(CONFIG_SENSORS_BMA2X2)    += bma2x2_driver.o
+obj-$(CONFIG_SENSORS_BMA2X2)    += bst_sensor_common.o
+# lenovo-sw youwc1 for g-sensor end
+obj-$(CONFIG_LENOVO_HALL)    += hall_switch.o
