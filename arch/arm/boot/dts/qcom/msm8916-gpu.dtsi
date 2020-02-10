@@ -27,7 +27,7 @@
 
 		qcom,chipid = <0x03000600>;
 
-		qcom,initial-pwrlevel = <3>;
+		qcom,initial-pwrlevel = <5>;
 
 		qcom,bus-control;
 		qcom,idle-timeout = <80>; //msec
@@ -118,6 +118,12 @@
 				qcom,gpu-freq = <19200000>;
 				qcom,bus-freq = <0>;
 			};
+
+                        qcom,gpu-pwrlevel@6 {
+                                reg = <6>;
+                                qcom,gpu-freq = <19200000>;
+                                qcom,bus-freq = <0>;
+                        };
 		};
 
 		/* Speed levels */
@@ -175,6 +181,12 @@
 					qcom,gpu-freq = <19200000>;
 					qcom,bus-freq = <0>;
 				};
+
+                                qcom,gpu-pwrlevel@6 {
+                                        reg = <6>;
+                                        qcom,gpu-freq = <19200000>;
+                                        qcom,bus-freq = <0>;
+                                };
 			};
 		};
 	};
